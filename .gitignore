@@ -2,3 +2,5 @@
 *.eir
 *.out
 *.exe
+out/*
+!out/.gitkeep

@@ -73,7 +73,7 @@ if outfile == None:
     outfile = fname + target
 
 call('sed', '-i', 's/EIGHT_CC_INPUT_FILE .*/EIGHT_CC_INPUT_FILE   \\"{}\\"/'.format(escape(infile)), config_hpp)
-call('g++', '-std=c++14', '-o', '{}/{}_eir.exe'.format(O_DIR, bname), cc_cpp)
+call('g++-6', '-std=c++14', '-o', '{}/{}_eir.exe'.format(O_DIR, bname), cc_cpp)
 
 if target == 'eir':
   redirect('{}/{}_eir.exe'.format(O_DIR, bname), outfile)
@@ -85,5 +85,5 @@ call('sed', '-i', '1iR\\"({}'.format(target),  eirfile)
 call('sed', '-i', '$a )\"',  eirfile)
 call('sed', '-i', 's/ELC_INPUT_FILE .*/ELC_INPUT_FILE   \\\"{}\\\"/'.format(escape(eirfile)),  config_hpp)
 
-call('g++', '-std=c++14', '-o', '{}/{}_out.exe'.format(O_DIR, bname), elc_cpp)
+call('g++-6', '-std=c++14', '-o', '{}/{}_out.exe'.format(O_DIR, bname), elc_cpp)
 redirect('{}/{}_out.exe'.format(O_DIR, bname), outfile)
