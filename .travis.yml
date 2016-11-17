@@ -1,8 +1,6 @@
 language: cpp
 sudo: required
 dist: trusty
-compiler:
-  - g++-6
 
 install:
   - sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test

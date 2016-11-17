@@ -61,6 +61,7 @@ args = argparser.parse_args()
 
 target = args.target
 infile = args.infile
+infile_txt = infile + ".txt"
 fname, _ = os.path.splitext(infile)
 bname = os.path.basename(fname)
 eirfile = '{}/out/{}.eir'.format(DIR, bname)
@@ -72,7 +73,10 @@ if outfile == None:
   else:
     outfile = fname + target
 
-call('sed', '-i', 's/EIGHT_CC_INPUT_FILE .*/EIGHT_CC_INPUT_FILE   \\"{}\\"/'.format(escape(infile)), config_hpp)
+call('cp', infile, infile_txt)
+call('sed', '-i', 's/EIGHT_CC_INPUT_FILE .*/EIGHT_CC_INPUT_FILE   \\"{}\\"/'.format(escape(infile_txt)), config_hpp)
+call('sed', '-i', '1iR\\"(',  infile_txt)
+call('sed', '-i', '$a )\"',  infile_txt)
 call('g++-6', '-std=c++14', '-o', '{}/{}_eir.exe'.format(O_DIR, bname), cc_cpp)
 
 if target == 'eir':
