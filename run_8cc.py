@@ -1,11 +1,15 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 
+from __future__ import print_function
 import os.path
 import sys
 import subprocess
 import argparse
 
 ## Utility
+def pr(*args):
+  print("INFO:", *args)
+
 def eprint(*args, **kwargs):
   print(*args, file=sys.stderr, **kwargs)
 
@@ -73,10 +77,14 @@ if outfile == None:
   else:
     outfile = fname + target
 
+pr("Start compilation from \"{}\" to \"{}\"".format(infile, outfile))
+pr("Convert C program into C++ string literal")
 call('cp', infile, infile_txt)
-call('sed', '-i', 's/EIGHT_CC_INPUT_FILE .*/EIGHT_CC_INPUT_FILE   \\"{}\\"/'.format(escape(infile_txt)), config_hpp)
 call('sed', '-i', '1iR\\"(',  infile_txt)
-call('sed', '-i', '$a )\"',  infile_txt)
+call('sed', '-i', '$ a )\"',  infile_txt)
+call('sed', '-i', 's/EIGHT_CC_INPUT_FILE .*/EIGHT_CC_INPUT_FILE   \\"{}\\"/'.format(escape(infile_txt)), config_hpp)
+
+pr("Compile C into ELVM IR")
 call('g++-6', '-std=c++14', '-o', '{}/{}_eir.exe'.format(O_DIR, bname), cc_cpp)
 
 if target == 'eir':
@@ -85,9 +93,13 @@ if target == 'eir':
 
 redirect('{}/{}_eir.exe'.format(O_DIR, bname), eirfile)
 
+pr("Convert ELVM IR into C++ string literal")
 call('sed', '-i', '1iR\\"({}'.format(target),  eirfile)
 call('sed', '-i', '$a )\"',  eirfile)
 call('sed', '-i', 's/ELC_INPUT_FILE .*/ELC_INPUT_FILE   \\\"{}\\\"/'.format(escape(eirfile)),  config_hpp)
 
+pr("Compile ELVM IR into {} file".format(target))
 call('g++-6', '-std=c++14', '-o', '{}/{}_out.exe'.format(O_DIR, bname), elc_cpp)
 redirect('{}/{}_out.exe'.format(O_DIR, bname), outfile)
+
+pr("\"{}\" was generated successfully".format(outfile))
