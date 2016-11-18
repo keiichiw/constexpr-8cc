@@ -1,4 +1,4 @@
-# constexpr-8cc: Compile-time C Compiler
+# constexpr-8cc: Compile-time C Compiler [![Build Status](https://travis-ci.org/kw-udon/constexpr-8cc.svg?branch=master)](https://travis-ci.org/kw-udon/constexpr-8cc)
 
 [constexpr-8cc](https://github.com/kw-udon/constexpr-8cc) is a compile-time C compiler implemented as C++14 constant expressions.
 This project is a port of [8cc](https://github.com/rui314/8cc) built on [ELVM Infrastructure](https://github.com/shinh/elvm).
