@@ -4,13 +4,13 @@
 This project is a port of [8cc](https://github.com/rui314/8cc) built on [ELVM Infrastructure](https://github.com/shinh/elvm).
 
 [Constant expressions in C++](http://en.cppreference.com/w/cpp/language/constant_expression) are expressions that can be evaluated at compile-time.
-In C++14, [by relaxing constrains](https://isocpp.org/files/papers/N3652.htmlc), constant expressions became so powerful that a C compiler can be implemented in!
+In C++14, [by relaxing constrains](https://isocpp.org/files/papers/N3652.htmlc), constant expressions became so **powerful** that **a C compiler can be implemented in**!
 
 In constexpr-8cc, the main routine for compilations of C programs is implemented in a C++14 `constexpr` function.
 Therefore, if you compile `8cc.cpp` to a binary file by g++, compilation of a C program will be performed as a compile-time computation and the result of this C compilation will be embedded into the generated binary.
 In this sense, constexpr-8cc is a **compile-time C compiler**.
 
-The following is the main function in [8cc.cpp](https://github.com/kw-udon/constexpr-8cc/blob/master/8cc.cpp).
+The following is the `main` function in [8cc.cpp](https://github.com/kw-udon/constexpr-8cc/blob/master/8cc.cpp).
 ```c++
 int main() {
   // Compile-time
@@ -52,13 +52,13 @@ In this file, the variable `EIGHT_CC_INPUT_FILE` is defined.
 `EIGHT_CC_INPUT_FILE` should be a name of a file that contains a source C program as a C++ string literal.
 This string will be embedded in 8cc.cpp at pre-processing-time and used as an input of the compile-time computation.
 
-So, when you compile constexpr-8cc manually, you have to convert a raw program to a string literal like the following:
+So, before compiling `8cc.cpp` manually, you have to convert a raw program to a string literal like the following:
 ```shell
-$ sed "1iR\"(" ./test/hello.c | sed "$ a )\"" > ./test/hello.c.txt # Convert to string literal
+$ sed "1iR\"(" ./test/hello.c | sed "$ a )\"" > ./test/hello.c.txt # Convert C to string literal
 $ g++-6 ./8cc.cpp -o eir_gen.out
 $ ./eir_gen.out > ./test/hello.eir    # eir_gen.out outputs ELVM IR
-$ sed -i "1iR\"(x86" ./test/hello.eir # Convert IR string literal
-$ sed -i "$a )\"" ./test/hello.eir
+$ sed -i "1iR\"(x86" ./test/hello.eir # Convert IR to string literal
+$ sed -i "$ a )\"" ./test/hello.eir
 $ g++-6 ./elc.cpp -o exe_gen.out
 $ ./exe_gen.out > ./hello.exe         # exe_gen.out outputs x86 binary
 $ chmod +x ./hello.exe
