@@ -4,7 +4,7 @@
 This project is a port of [8cc](https://github.com/rui314/8cc) built on [ELVM Infrastructure](https://github.com/shinh/elvm).
 
 [Constant expressions in C++](http://en.cppreference.com/w/cpp/language/constant_expression) are expressions that can be evaluated at compile-time.
-In C++14, [by relaxing constrains](https://isocpp.org/files/papers/N3652.htmlc), constant expressions became so **powerful** that **a C compiler can be implemented in**!
+In C++14, [by relaxing constrains](https://isocpp.org/files/papers/N3652.html), constant expressions became so **powerful** that **a C compiler can be implemented in**!
 
 In constexpr-8cc, the main routine for compilations of C programs is implemented in a C++14 `constexpr` function.
 Therefore, if you compile `8cc.cpp` to a binary file by g++, compilation of a C program will be performed as a compile-time computation and the result of this C compilation will be embedded into the generated binary.
