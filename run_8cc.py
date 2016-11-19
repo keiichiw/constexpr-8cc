@@ -32,8 +32,24 @@ def redirect(cmd, dst):
       eprint(e)
       exit(1)
 
-def escape(s):
-  return s.replace('/', '\/')
+def to_cpp_string(fname, target=''):
+  pr('Convert the content of "{}" into C++ string literal'.format(fname))
+  with open(fname, 'r') as f:
+    s = f.read()
+  s = 'R"(' + target + s + ')"\n'
+  with open(fname, 'w') as f:
+    f.write(s)
+
+def replace_line(fname, var, new_str):
+  pr('Change the value of "{}" in "{}"'.format(var, fname))
+  with open(fname, 'r') as f:
+    ls = f.readlines()
+  with open(fname, 'w') as f:
+    for l in ls:
+      if var in l:
+        f.write(new_str)
+      else:
+        f.write(l)
 
 ## Argument Parser
 DIR = os.path.dirname(__file__)
@@ -80,9 +96,9 @@ if outfile == None:
 pr("Start compilation from \"{}\" to \"{}\"".format(infile, outfile))
 pr("Convert C program into C++ string literal")
 call('cp', infile, infile_txt)
-call('sed', '-i', '1iR\\"(',  infile_txt)
-call('sed', '-i', '$ a )\"',  infile_txt)
-call('sed', '-i', 's/EIGHT_CC_INPUT_FILE .*/EIGHT_CC_INPUT_FILE   \\"{}\\"/'.format(escape(infile_txt)), config_hpp)
+to_cpp_string(infile_txt)
+replace_line(config_hpp,
+                 'EIGHT_CC_INPUT_FILE', '#define EIGHT_CC_INPUT_FILE  "{}"\n'.format(infile_txt))
 
 pr("Compile C into ELVM IR")
 call('g++-6', '-std=c++14', '-o', '{}/{}_eir.exe'.format(O_DIR, bname), cc_cpp)
@@ -94,9 +110,9 @@ if target == 'eir':
 redirect('{}/{}_eir.exe'.format(O_DIR, bname), eirfile)
 
 pr("Convert ELVM IR into C++ string literal")
-call('sed', '-i', '1iR\\"({}'.format(target),  eirfile)
-call('sed', '-i', '$a )\"',  eirfile)
-call('sed', '-i', 's/ELC_INPUT_FILE .*/ELC_INPUT_FILE   \\\"{}\\\"/'.format(escape(eirfile)),  config_hpp)
+to_cpp_string(eirfile, target + '\n')
+replace_line(config_hpp,
+             'ELC_INPUT_FILE', '#define ELC_INPUT_FILE  "{}"\n'.format(eirfile))
 
 pr("Compile ELVM IR into {} file".format(target))
 call('g++-6', '-std=c++14', '-o', '{}/{}_out.exe'.format(O_DIR, bname), elc_cpp)
