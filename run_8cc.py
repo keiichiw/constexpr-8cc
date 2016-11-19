@@ -80,9 +80,9 @@ if outfile == None:
 pr("Start compilation from \"{}\" to \"{}\"".format(infile, outfile))
 pr("Convert C program into C++ string literal")
 call('cp', infile, infile_txt)
-call('sed', '-i', '1iR\\"(',  infile_txt)
-call('sed', '-i', '$ a )\"',  infile_txt)
-call('sed', '-i', 's/EIGHT_CC_INPUT_FILE .*/EIGHT_CC_INPUT_FILE   \\"{}\\"/'.format(escape(infile_txt)), config_hpp)
+call('sed', '-i', '', '1s/^/R\\"(/',  infile_txt)
+call('sed', '-i', '', '$s/$/)\"/',  infile_txt)
+call('sed', '-i', '', 's/EIGHT_CC_INPUT_FILE .*/EIGHT_CC_INPUT_FILE   \\"{}\\"/'.format(escape(infile_txt)), config_hpp)
 
 pr("Compile C into ELVM IR")
 call('g++-6', '-std=c++14', '-o', '{}/{}_eir.exe'.format(O_DIR, bname), cc_cpp)
@@ -94,9 +94,9 @@ if target == 'eir':
 redirect('{}/{}_eir.exe'.format(O_DIR, bname), eirfile)
 
 pr("Convert ELVM IR into C++ string literal")
-call('sed', '-i', '1iR\\"({}'.format(target),  eirfile)
-call('sed', '-i', '$a )\"',  eirfile)
-call('sed', '-i', 's/ELC_INPUT_FILE .*/ELC_INPUT_FILE   \\\"{}\\\"/'.format(escape(eirfile)),  config_hpp)
+call('sed', '-i', '', '1s/^/R\\"({}\\\n/'.format(target), eirfile)
+call('sed', '-i', '', '$s/$/)\"/',  eirfile)
+call('sed', '-i', '', 's/ELC_INPUT_FILE .*/ELC_INPUT_FILE   \\\"{}\\\"/'.format(escape(eirfile)),  config_hpp)
 
 pr("Compile ELVM IR into {} file".format(target))
 call('g++-6', '-std=c++14', '-o', '{}/{}_out.exe'.format(O_DIR, bname), elc_cpp)
