@@ -1,11 +1,14 @@
 language: cpp
-sudo: required
-dist: trusty
+
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      sudo: required
+    - os: osx
 
 install:
-  - sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
-  - sudo apt-get update
-  - sudo apt-get install g++-6
+  - ./travis_install.sh
 
 script:
   - ./travis_test.sh
