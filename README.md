@@ -65,6 +65,10 @@ $ chmod +x ./hello.exe
 $ ./hello.exe
 Hello, world!
 ```
+# How was constexpr-8cc generated?
+When you see [`8cc.hpp`](https://github.com/kw-udon/constexpr-8cc/blob/master/8cc.hpp), you will know this program was not written by hand.
+Actually, I used [ELVM Compiler Infrastructure](https://github.com/shinh/elvm) to generate it.
+I just implemented a translator from ELVM IR to C++14 constexpr [here](https://github.com/shinh/elvm/pull/15).
 
 ## References
 * [8cc](https://github.com/rui314/8cc) ([@rui314](https://github.com/rui314))
