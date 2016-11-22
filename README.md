@@ -81,7 +81,7 @@ I just implemented a translator from ELVM IR to C++14 constexpr [here](https://g
 * [8cc](https://github.com/rui314/8cc) ([@rui314](https://github.com/rui314))
   - A very cool C compiler. constexpr-8cc is a C++14's constexpr port of 8cc.
 * [ELVM](https://github.com/shinh/elvm) ([@shinh](https://github.com/shinh))
-  - ELVM is a Eso Lang Virtual Machine. constexpr-8cc is built on ELVM infrastructure.
+  - ELVM(EsoLang Virtual Machine) is a parody project of LLVM, but dedicated to Esoteric Languages. constexpr-8cc is built on ELVM infrastructure.
 * [8cc.vim](https://github.com/rhysd/8cc.vim) ([@rhysd](https://github.com/rhysd)), [8cc.tex](https://github.com/hak7a3/8cc.tex) ([@hak7a3](https://github.com/hak7a3))
   - constexpr-8cc is influenced by these projects.
 * [Compile-time Brainf\*ck compiler](https://github.com/bolero-MURAKAMI/Sprout/blob/master/example/brainfuck/x86_compile.cpp) ([@bolero-MURAKAMI](https://github.com/bolero-MURAKAMI))
