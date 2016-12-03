@@ -86,3 +86,5 @@ I just implemented a translator from ELVM IR to C++14 constexpr [here](https://g
   - constexpr-8cc is influenced by these projects.
 * [Compile-time Brainf\*ck compiler](https://github.com/bolero-MURAKAMI/Sprout/blob/master/example/brainfuck/x86_compile.cpp) ([@bolero-MURAKAMI](https://github.com/bolero-MURAKAMI))
   - I got some ideas from this program.
+  
+* [My blog post (in Japanese)](http://kw-udon.hatenablog.com/entry/2016/12/03/201722)
