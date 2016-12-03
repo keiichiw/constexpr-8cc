@@ -4,4 +4,3 @@
 *.exe
 out/*
 !out/.gitkeep
-test/*.c.txt

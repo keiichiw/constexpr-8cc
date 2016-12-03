@@ -98,7 +98,7 @@ pr("Convert C program into C++ string literal")
 call('cp', infile, infile_txt)
 to_cpp_string(infile_txt)
 replace_line(config_hpp,
-                 'EIGHT_CC_INPUT_FILE', '#define EIGHT_CC_INPUT_FILE  "{}"\n'.format(infile_txt))
+                 '#define EIGHT_CC_INPUT_FILE', '#define EIGHT_CC_INPUT_FILE  "{}"\n'.format(infile_txt))
 
 pr("Compile C into ELVM IR")
 call('g++-6', '-std=c++14', '-o', '{}/{}_eir.exe'.format(O_DIR, bname), cc_cpp)
@@ -112,7 +112,7 @@ redirect('{}/{}_eir.exe'.format(O_DIR, bname), eirfile)
 pr("Convert ELVM IR into C++ string literal")
 to_cpp_string(eirfile, target + '\n')
 replace_line(config_hpp,
-             'ELC_INPUT_FILE', '#define ELC_INPUT_FILE  "{}"\n'.format(eirfile))
+             '#define ELC_INPUT_FILE', '#define ELC_INPUT_FILE  "{}"\n'.format(eirfile))
 
 pr("Compile ELVM IR into {} file".format(target))
 call('g++-6', '-std=c++14', '-o', '{}/{}_out.exe'.format(O_DIR, bname), elc_cpp)
