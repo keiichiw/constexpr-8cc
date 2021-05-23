@@ -1,4 +1,4 @@
-# constexpr-8cc: Compile-time C Compiler [![Build Status](https://travis-ci.org/keiichiw/constexpr-8cc.svg?branch=master)](https://travis-ci.org/keiichiw/constexpr-8cc)
+# constexpr-8cc: Compile-time C Compiler ![Build Status](https://github.com/keiichiw/constexpr-8cc/actions/workflows/main.yml/badge.svg)
 
 [constexpr-8cc](https://github.com/keiichiw/constexpr-8cc) is a compile-time C compiler implemented as C++14 constant expressions.
 This enables you to **compile while you compile!**
@@ -31,10 +31,11 @@ Thus, you will find that the compilation of a C program is done in compile-time.
 
 ## Requirements
 
-`constexpr-8cc` requires Linux with >g++-6.2. I confirmed `./test/hello.c` can be compiled with `g++-6.2` and `g++-8.3` at least.
+`constexpr-8cc` requires Linux with >g++-6.2. I confirmed `./test/hello.c` can be compiled with `g++-6.2`, `g++-8.3` and `g++-9.3` at least.
 
 * g++-6.2 worked without any extra flag related to constexpr as there was no limitation of constant's loop counts at this version.
 * With g++-8.3, I needed to enlarge constexpr's loop count with `-fconstexpr-loop-limit`. The maximum number we can specify is `2**31 - 1`.
+* With g++-9.3, in addition to `-fconstexpr-loop-limit`, enlarging `-fconstexpr-ops-limit` was needed.
 * There is no guarantee that it works with other versions of g++.
 * I couldn't make it work with clang++ as clang++ has more strict limitation of constexpr loop counts.
 

@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-g++-6 --version
+g++ --version
 
 for fname in ./test/*.c
 do
