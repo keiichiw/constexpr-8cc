@@ -23,20 +23,20 @@ def call(*cmd):
 
 def get_compiler_cmds():
   try:
-    # Check if g++-6 was explicitly installed.
-    subprocess.run(['g++-6', '-v'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    # Since g++6 doesn't have limit of constexpr loop count, we don't need any special flags.
-    return ['g++-6']
-  except Exception:
-    pass
-
-  try:
-    subprocess.run(['g++', '-v'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    # Assuming g++ is newer than 6, we set the loop limit to the maximum number.
-    return ['g++', '-fconstexpr-loop-limit={}'.format(2**31 - 1)]
+    out = subprocess.run(['g++', '-v', '--help'], capture_output=True)
   except Exception:
     eprint('Error: g++ is not installed.')
     exit(1)
+
+  cmd = ['g++']
+
+  # If constexpr-*-limit flags are supported, set to the maximum number.
+  if b'fconstexpr-loop-limit' in out.stdout:
+    cmd.append('-fconstexpr-loop-limit={}'.format(2**31 - 1))
+  if b'fconstexpr-ops-limit' in out.stdout:
+    cmd.append('-fconstexpr-ops-limit={}'.format(2**31 - 1))
+
+  return cmd
 
 def redirect(cmd, dst):
   with open(dst, 'w') as f:
