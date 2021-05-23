@@ -1,6 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
-from __future__ import print_function
 import os.path
 import sys
 import subprocess
@@ -20,6 +19,23 @@ def call(*cmd):
       exit(1)
   except Exception as e:
     eprint(e)
+    exit(1)
+
+def get_compiler_cmds():
+  try:
+    # Check if g++-6 was explicitly installed.
+    subprocess.run(['g++-6', '-v'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    # Since g++6 doesn't have limit of constexpr loop count, we don't need any special flags.
+    return ['g++-6']
+  except Exception:
+    pass
+
+  try:
+    subprocess.run(['g++', '-v'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    # Assuming g++ is newer than 6, we set the loop limit to the maximum number.
+    return ['g++', '-fconstexpr-loop-limit={}'.format(2**31 - 1)]
+  except Exception:
+    eprint('Error: g++ is not installed.')
     exit(1)
 
 def redirect(cmd, dst):
@@ -93,6 +109,8 @@ if outfile == None:
   else:
     outfile = fname + target
 
+compiler_cmds = get_compiler_cmds()
+
 pr("Start compilation from \"{}\" to \"{}\"".format(infile, outfile))
 pr("Convert C program into C++ string literal")
 call('cp', infile, infile_txt)
@@ -101,7 +119,8 @@ replace_line(config_hpp,
                  '#define EIGHT_CC_INPUT_FILE', '#define EIGHT_CC_INPUT_FILE  "{}"\n'.format(infile_txt))
 
 pr("Compile C into ELVM IR")
-call('g++-6', '-std=c++14', '-o', '{}/{}_eir.exe'.format(O_DIR, bname), cc_cpp)
+args = compiler_cmds + ['-std=c++14', '-o', '{}/{}_eir.exe'.format(O_DIR, bname), cc_cpp]
+call(*args)
 
 if target == 'eir':
   redirect('{}/{}_eir.exe'.format(O_DIR, bname), outfile)
@@ -115,7 +134,8 @@ replace_line(config_hpp,
              '#define ELC_INPUT_FILE', '#define ELC_INPUT_FILE  "{}"\n'.format(eirfile))
 
 pr("Compile ELVM IR into {} file".format(target))
-call('g++-6', '-std=c++14', '-o', '{}/{}_out.exe'.format(O_DIR, bname), elc_cpp)
+args = compiler_cmds + ['-std=c++14', '-o', '{}/{}_out.exe'.format(O_DIR, bname), elc_cpp]
+call(*args)
 redirect('{}/{}_out.exe'.format(O_DIR, bname), outfile)
 
 pr("\"{}\" was generated successfully".format(outfile))

@@ -29,10 +29,16 @@ int main() {
 In this program, the return value of `eight_cc` is stored into the variable `buf` with a `constexpr` specifier.
 Thus, you will find that the compilation of a C program is done in compile-time.
 
-## Usage
+## Requirements
 
-`constexpr-8cc` works on Linux with [**g++ 6.2**](https://gcc.gnu.org/gcc-6/).
-(The version of g++ is **important!**)
+`constexpr-8cc` requires Linux with >g++-6.2. I confirmed `./test/hello.c` can be compiled with `g++-6.2` and `g++-8.3` at least.
+
+* g++-6.2 worked without any extra flag related to constexpr as there was no limitation of constant's loop counts at this version.
+* With g++-8.3, I needed to enlarge constexpr's loop count with `-fconstexpr-loop-limit`. The maximum number we can specify is `2**31 - 1`.
+* There is no guarantee that it works with other versions of g++.
+* I couldn't make it work with clang++ as clang++ has more strict limitation of constexpr loop counts.
+
+## How to run
 
 ### Compilation by `run_8cc.py`
 In order to try constexpr-8cc easily, use `run_8cc.py`.
