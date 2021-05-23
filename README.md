@@ -31,7 +31,7 @@ Thus, you will find that the compilation of a C program is done in compile-time.
 
 ## Usage
 
-`constexpr-8cc` works on Linux and OS X and requires [**g++ 6.2**](https://gcc.gnu.org/gcc-6/).
+`constexpr-8cc` works on Linux with [**g++ 6.2**](https://gcc.gnu.org/gcc-6/).
 (The version of g++ is **important!**)
 
 ### Compilation by `run_8cc.py`
